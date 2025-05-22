@@ -1,0 +1,283 @@
+Updated Pull-Up Club Project Instructions
+Project Overview
+Pull-Up Club is a subscription-based pull-up competition platform ($9.99/month) where users submit videos, get judged by admins, and compete on global leaderboards. Built with React + TypeScript + Vite, Supabase backend, and Stripe payments.
+
+Core Architecture Rules
+Tech Stack Requirements
+Frontend: React 18 + TypeScript + Vite (NOT Next.js)
+Styling: Tailwind CSS + shadcn/ui components
+Animation: motion.dev (NOT framer-motion)
+Scroll: @studio-freight/lenis for smooth scrolling
+Backend: Supabase (Auth + Postgres + RLS)
+Payments: Stripe Checkout + webhooks
+Icons: Lucide React only
+Router: React Router DOM
+Brand & Design System
+Colors (Updated Brand Palette)
+css
+:root {
+  --background: 0 0% 0%;           /* #000000 Pure black background */
+  --foreground: 0 0% 93%;          /* #ededed Secondary words accent */
+  --primary: 54 23% 52%;           /* #9a9871 Main word color */
+  --primary-foreground: 0 0% 0%;   /* Black text on primary */
+  --secondary: 8 4% 14%;           /* #231f20 Dark secondary */
+  --secondary-foreground: 0 0% 93%; /* Light text on secondary */
+  --muted: 45 15% 12%;             /* #221f16 Muted background */
+  --muted-foreground: 0 0% 70%;    /* Muted text */
+  --accent: 54 23% 52%;            /* Same as primary for consistency */
+  --accent-foreground: 0 0% 0%;    /* Black text on accent */
+  --destructive: 0 84% 60%;        /* Red for warnings */
+  --border: 8 4% 14%;              /* #231f20 for borders */
+  --input: 8 4% 14%;               /* #231f20 for inputs */
+  --ring: 54 23% 52%;              /* #9a9871 for focus rings */
+}
+Tailwind CSS Custom Colors
+js
+// Add to tailwind.config.js
+colors: {
+  // Brand colors
+  'brand-main': '#9a9871',        // Main word color
+  'brand-dark-1': '#231f20',      // Dark secondary
+  'brand-dark-2': '#221f16',      // Muted dark
+  'brand-accent': '#ededed',      // Secondary words accent
+  'brand-bg': '#000000',          // Background main
+  
+  // shadcn/ui compatible
+  background: "hsl(var(--background))",
+  foreground: "hsl(var(--foreground))",
+  primary: {
+    DEFAULT: "hsl(var(--primary))",
+    foreground: "hsl(var(--primary-foreground))",
+  },
+  secondary: {
+    DEFAULT: "hsl(var(--secondary))",
+    foreground: "hsl(var(--secondary-foreground))",
+  },
+  muted: {
+    DEFAULT: "hsl(var(--muted))",
+    foreground: "hsl(var(--muted-foreground))",
+  },
+  accent: {
+    DEFAULT: "hsl(var(--accent))",
+    foreground: "hsl(var(--accent-foreground))",
+  },
+}
+Typography Hierarchy
+Main Headlines: text-brand-main (
+#9a9871) - Primary brand color
+Body Text: text-brand-accent (
+#ededed) - Light readable text
+Secondary Text: text-muted-foreground - Subdued information
+Backgrounds:
+Main: bg-brand-bg (
+#000000)
+Cards: bg-secondary (
+#231f20)
+Subtle: bg-muted (
+#221f16)
+Visual Style
+Military/tactical aesthetic with updated color palette
+Pure black backgrounds (
+#000000)
+Olive/khaki main color (
+#9a9871) for emphasis
+Light grey (
+#ededed) for readable body text
+Dark greys (
+#231f20, 
+#221f16) for cards and sections
+Clean, athletic design
+Subtle animations (never overwhelming)
+High contrast for accessibility
+Component Standards
+Color Usage Guidelines
+typescript
+// Button variants
+<Button className="bg-brand-main text-black hover:bg-brand-main/90">
+  Primary Action
+</Button>
+
+<Button variant="secondary" className="bg-secondary text-brand-accent">
+  Secondary Action
+</Button>
+
+// Card components
+<Card className="bg-secondary border-border">
+  <CardHeader>
+    <CardTitle className="text-brand-main">Main Title</CardTitle>
+    <CardDescription className="text-brand-accent">
+      Description text
+    </CardDescription>
+  </CardHeader>
+</Card>
+
+// Text hierarchy
+<h1 className="text-brand-main text-4xl font-bold">Main Headlines</h1>
+<p className="text-brand-accent">Body text content</p>
+<span className="text-muted-foreground">Secondary information</span>
+shadcn/ui Integration
+Always use shadcn components with proper color theming:
+
+Button with brand color variants
+Card with secondary backgrounds
+Table with proper contrast
+Form + Input + Label with brand focus colors
+Dialog with dark overlays
+Tabs with brand active states
+Badge with tier-appropriate colors
+Toast with brand styling
+Animation Guidelines
+Use motion.dev with brand-consistent animations:
+
+typescript
+// Standard fade in up with brand timing
+const fadeInUp = {
+  initial: { opacity: 0, y: 40 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+}
+
+// Brand color reveal animations
+const colorReveal = {
+  initial: { color: '#ededed' },
+  animate: { color: '#9a9871' },
+  transition: { duration: 0.8 }
+}
+Business Logic Rules
+User Flow Requirements
+Sign Up → Stripe checkout → Profile completion → Dashboard access
+Submissions: 1 per month limit, 30-day cooldown after approval
+Rejected submissions: Immediate resubmit allowed
+Admin review: Approve/reject with actual pull-up count adjustment
+Submission Validation
+Enforce these video requirements:
+
+Public YouTube/Instagram/TikTok links only
+Continuous recording (no cuts/edits)
+Clear view of full movement
+Chin over bar + full extension required
+Age 16+ required for participation
+Badge/Tier System with Brand Colors
+typescript
+const tiers = {
+  recruit: { 
+    min: 1, max: 9, 
+    color: '#ededed',     // Light grey for entry level
+    bgColor: '#221f16'    // Muted background
+  },
+  proven: { 
+    min: 10, max: 19, 
+    color: '#9a9871',     // Brand main for progression
+    bgColor: '#231f20'    // Secondary background
+  },
+  hardened: { 
+    min: 20, max: 29, 
+    color: '#9a9871',     // Brand main
+    bgColor: '#231f20' 
+  },
+  operator: { 
+    min: 30, max: 39, 
+    color: '#9a9871',     // Brand main
+    bgColor: '#231f20' 
+  },
+  elite: { 
+    min: 40, max: 999, 
+    color: '#000000',     // Black text
+    bgColor: '#9a9871'    // Brand main background (inverse)
+  }
+}
+Database & Auth
+Supabase Schema
+Key tables to work with:
+
+user_profiles: Profile completion, shipping info
+submissions: Video submissions with review status
+stripe_customers: User-to-customer mapping
+stripe_subscriptions: Active subscription tracking
+Row Level Security (RLS)
+Always respect existing policies:
+
+Users see only their own data
+Admins see all submissions
+Service role has full access
+Development Standards
+File Organization
+src/
+├── pages/           # Route components
+├── components/      # Reusable UI components
+│   ├── ui/         # shadcn components
+│   └── [feature]/  # Feature-specific components
+├── lib/            # Utilities and configurations
+├── context/        # React context providers
+└── types/          # TypeScript type definitions
+CSS Custom Properties Setup
+css
+/* globals.css */
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 93%;
+    --primary: 54 23% 52%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 8 4% 14%;
+    --secondary-foreground: 0 0% 93%;
+    --muted: 45 15% 12%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 54 23% 52%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 8 4% 14%;
+    --input: 8 4% 14%;
+    --ring: 54 23% 52%;
+    --radius: 0.5rem;
+  }
+}
+Critical Don'ts
+Never Change These
+Existing Supabase RLS policies
+Stripe webhook endpoints
+User authentication flow
+Database schema structure
+Subscription pricing ($9.99/month)
+The brand color palette - Always use the specified hex values
+Brand Color Consistency
+Always use #9a9871 for main headlines and CTAs
+Always use #000000 for main backgrounds
+Always use #ededed for body text
+Always use #231f20 and #221f16 for card backgrounds
+Never use colors outside the brand palette
+Maintain proper contrast ratios for accessibility
+Feature-Specific Rules
+Leaderboard Styling
+Rank numbers in text-brand-main
+Player names in text-brand-accent
+Background cards in bg-secondary
+Elite badges with inverse colors (black text on brand background)
+Admin Dashboard Styling
+Review cards with bg-secondary backgrounds
+Approve buttons with bg-brand-main
+Status indicators using brand color variations
+Profile Management Styling
+Tab navigation with text-brand-main active states
+Form inputs with bg-input and border-border
+Success states in text-brand-main
+Performance Requirements
+First contentful paint < 2s
+Lighthouse score > 90
+Mobile-first responsive design
+Lazy load images and heavy components
+Optimize bundle size with code splitting
+Testing & Quality
+All forms must have proper validation
+Error states for all API calls
+Loading states for all async operations
+Accessibility compliance (WCAG 2.1 AA)
+Cross-browser compatibility
+Color contrast compliance with the brand palette
+Remember: This is a premium fitness competition platform with a specific military-inspired color scheme. Every interaction should feel smooth, professional, and motivating while strictly adhering to the brand colors: 
+#9a9871 (main), 
+#231f20/
+#221f16 (dark sections), 
+#000000 (backgrounds), and 
+#ededed (body text).
