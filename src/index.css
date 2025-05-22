@@ -1,11 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --accent-color: #9b9b6f;
+ 
+@layer base {
+  :root {
+    --background: 0 0% 0%;           /* #000000 Pure black background */
+    --foreground: 0 0% 93%;          /* #ededed Secondary words accent */
+    --primary: 54 23% 52%;           /* #9a9871 Main word color */
+    --primary-foreground: 0 0% 0%;   /* Black text on primary */
+    --secondary: 8 4% 14%;           /* #231f20 Dark secondary */
+    --secondary-foreground: 0 0% 93%; /* Light text on secondary */
+    --muted: 45 15% 12%;             /* #221f16 Muted background */
+    --muted-foreground: 0 0% 70%;    /* Muted text */
+    --accent: 54 23% 52%;            /* Same as primary for consistency */
+    --accent-foreground: 0 0% 0%;    /* Black text on accent */
+    --destructive: 0 84% 60%;        /* Red for warnings */
+    --destructive-foreground: 0 0% 98%; /* White text on destructive */
+    --border: 8 4% 14%;              /* #231f20 for borders */
+    --input: 8 4% 14%;               /* #231f20 for inputs */
+    --ring: 54 23% 52%;              /* #9a9871 for focus rings */
+    --radius: 0.5rem;                /* Border radius */
+  }
 }
 
-body {
-  @apply bg-black text-white;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Military style stencil font for certain headings */
+@font-face {
+  font-family: 'Stencil';
+  src: url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-stencil {
+  font-family: 'Special Elite', monospace;
 }
